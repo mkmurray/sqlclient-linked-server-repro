@@ -1,3 +1,4 @@
+using System.Reflection;
 using Microsoft.Data.SqlClient;
 
 var server = Required("SQL_SERVER");
@@ -23,7 +24,10 @@ try
 {
     await using var connection = new SqlConnection(connectionString);
     await connection.OpenAsync();
-    Console.WriteLine($"SqlClient: {typeof(SqlConnection).Assembly.GetName().Version}");
+    var packageVersion = Assembly.GetExecutingAssembly()
+        .GetCustomAttributes<AssemblyMetadataAttribute>()
+        .FirstOrDefault(attribute => attribute.Key == "SqlClientPackageVersion")?.Value ?? "unknown";
+    Console.WriteLine($"Microsoft.Data.SqlClient NuGet package: {packageVersion}");
     Console.WriteLine("First-hop identity:");
     await PrintRows(connection, """
         SELECT @@SERVERNAME AS server_name,
