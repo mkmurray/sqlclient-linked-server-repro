@@ -8,5 +8,6 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.Data.SqlClient" Version="$(SqlClientVersion)" />
+    <AssemblyMetadata Include="SqlClientPackageVersion" Value="$(SqlClientVersion)" />
   </ItemGroup>
 </Project>
